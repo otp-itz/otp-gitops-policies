@@ -11,7 +11,7 @@ metadata:
   labels:
     operators.coreos.com/openshift-gitops-operator.openshift-operators: ''
 spec:
-  channel: stable
+  channel: latest
   installPlanApproval: Automatic
   name: openshift-gitops-operator
   source: redhat-operators
@@ -236,6 +236,7 @@ rules:
     resources:
       - machineconfigpools
       - containerruntimeconfigs
+      - machineconfigs
   - verbs:
       - '*'
     apiGroups:
@@ -293,33 +294,9 @@ rules:
   - verbs:
       - '*'
     apiGroups:
-      - operator.open-cluster-management.io
-    resources:
-      - multiclusterhubs
-  - verbs:
-      - '*'
-    apiGroups:
-      - internal.open-cluster-management.io
-    resources:
-      - managedclusterinfos
-  - verbs:
-      - '*'
-    apiGroups:
-      - cluster.open-cluster-management.io
-    resources:
-      - '*'
-  - verbs:
-      - '*'
-    apiGroups:
       - project.openshift.io
     resources:
       - projects
-  - verbs:
-      - '*'
-    apiGroups:
-      - agent.open-cluster-management.io
-    resources:
-      - klusterletaddonconfigs
   - verbs:
       - '*'
     apiGroups:
@@ -327,18 +304,6 @@ rules:
     resources:
       - validatingwebhookconfigurations
       - mutatingwebhookconfigurations
-  - verbs:
-      - '*' 
-    apiGroups:
-      - cluster.open-cluster-management.io
-    resources:
-      - '*'
-  - verbs:
-      - '*'
-    apiGroups:
-      - clusterview.open-cluster-management.io
-    resources:
-      - '*'
   - verbs:
       - '*'
     apiGroups:
@@ -351,31 +316,6 @@ rules:
       - objectbucket.io
     resources:
       - '*'
-  - verbs:
-      - get
-      - list
-      - watch
-      - create
-      - update
-      - patch
-      - delete
-    apiGroups:
-      - policy.open-cluster-management.io
-    resources:
-      - policies
-      - placementbindings
-  - verbs:
-      - get 
-      - list
-      - watch
-      - create
-      - update
-      - patch
-      - delete
-    apiGroups:
-      - apps.open-cluster-management.io
-    resources:
-      - placementrules
   - verbs:
       - '*'
     apiGroups:
@@ -415,6 +355,18 @@ rules:
       - '*'
     apiGroups:
       - platform.stackrox.io
+    resources: 
+      - '*'
+  - verbs:
+      - '*'
+    apiGroups:
+      - operator.knative.dev
+    resources: 
+      - '*'
+  - verbs:
+      - '*'
+    apiGroups:
+      - isc.ibm.com
     resources: 
       - '*'
 ---
@@ -818,8 +770,6 @@ spec:
         memory: 512Mi
   rbac: {}
   repo:
-    image: quay.io/benswinneyau/openshift-gitops-repo-server
-    version: latest
     resources:
       limits:
         cpu: '1'
@@ -835,14 +785,17 @@ spec:
       kinds:
       - TaskRun
       - PipelineRun
-  dex:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
+  sso:
+    provider: dex
+    dex:
+      openShiftOAuth: true
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+        requests:
+          cpu: 250m
+          memory: 128Mi
   ha:
     enabled: false
     resources:
@@ -852,7 +805,6 @@ spec:
       requests:
         cpu: 250m
         memory: 128Mi
-  kustomizeBuildOptions: '--enable-alpha-plugins'
   tls:
     ca: {}
   redis:
@@ -868,7 +820,7 @@ spec:
     resources:
       limits:
         cpu: '2'
-        memory: 4Gi
+        memory: 1Gi
       requests:
         cpu: 250m
-        memory: 1Gi
+        memory: 512Mi
