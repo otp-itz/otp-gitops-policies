@@ -12,3 +12,31 @@ subjects:
   - name: must-have-odf
     apiGroup: policy.open-cluster-management.io
     kind: Policy
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: must-have-storage-nodes-placement
+  namespace: policies
+placementRef:
+  name: must-have-odf-placement
+  apiGroup: apps.open-cluster-management.io
+  kind: PlacementRule
+subjects:
+  - name: must-have-storage-nodes
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: must-have-infra-nodes-placement
+  namespace: policies
+placementRef:
+  name: must-have-odf-placement
+  apiGroup: apps.open-cluster-management.io
+  kind: PlacementRule
+subjects:
+  - name: must-have-infra-nodes
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy
