@@ -1,0 +1,114 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: must-have-odf
+  namespace: policies
+  annotations:
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: openshift-storage-namespace
+        spec:
+          remediationAction: enforce
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  labels:
+                    openshift.io/cluster-monitoring: "true"
+                  name: openshift-storage
+          pruneObjectBehavior: None
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: openshift-data-foundation-operator-subscription
+        spec:
+          remediationAction: enforce
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operators.coreos.com/v1alpha1
+                kind: Subscription
+                metadata:
+                  name: odf-operator
+                  namespace: openshift-storage
+                spec:
+                  channel: stable-4.10
+                  name: odf-operator
+                  source: redhat-operators
+                  sourceNamespace: openshift-marketplace
+          pruneObjectBehavior: None
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: openshift-data-foundation-operator-status
+        spec:
+          remediationAction: enforce
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operators.coreos.com/v1alpha1
+                kind: ClusterServiceVersion
+                metadata:
+                  namespace: openshift-storage
+                spec:
+                  displayName: OpenShift Data Foundation
+                status:
+                  phase: Succeeded
+          pruneObjectBehavior: None
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: storage-system-status
+        spec:
+          remediationAction: enforce
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: odf.openshift.io/v1alpha1
+                kind: StorageSystem
+                metadata:
+                  name: ocs-storagecluster-storagesystem
+                  namespace: openshift-storage
+                spec:
+                  kind: storagecluster.ocs.openshift.io/v1
+                  name: ocs-storagecluster
+                  namespace: openshift-storage
+          pruneObjectBehavior: None
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: storage-classes-available
+        spec:
+          remediationAction: enforce
+          severity: high
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: odf.openshift.io/v1alpha1
+                kind: StorageSystem
+                metadata:
+                  name: ocs-storagecluster-storagesystem
+                  namespace: openshift-storage
+                spec:
+                  kind: storagecluster.ocs.openshift.io/v1
+                  name: ocs-storagecluster
+                  namespace: openshift-storage
+          pruneObjectBehavior: None

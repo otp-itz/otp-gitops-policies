@@ -1,0 +1,14 @@
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: must-have-odf-placement
+  namespace: policies
+spec:
+  clusterSelector:
+    matchExpressions:
+      - key: clusterClaimName
+        operator: In
+        values:
+          - shared-cpd-cluster
+  clusterConditions: []
