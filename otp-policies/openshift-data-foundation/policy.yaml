@@ -91,24 +91,3 @@ spec:
                   name: ocs-storagecluster
                   namespace: openshift-storage
           pruneObjectBehavior: None
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: storage-classes-available
-        spec:
-          remediationAction: enforce
-          severity: high
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: odf.openshift.io/v1alpha1
-                kind: StorageSystem
-                metadata:
-                  name: ocs-storagecluster-storagesystem
-                  namespace: openshift-storage
-                spec:
-                  kind: storagecluster.ocs.openshift.io/v1
-                  name: ocs-storagecluster
-                  namespace: openshift-storage
-          pruneObjectBehavior: None
