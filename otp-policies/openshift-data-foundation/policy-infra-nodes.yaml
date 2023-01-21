@@ -14,7 +14,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: openshift-storage-namespace
+          name: cluster-infra
         spec:
           remediationAction: enforce
           severity: high
