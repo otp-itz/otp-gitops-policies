@@ -10,5 +10,5 @@ spec:
       - key: clusterClaimName
         operator: In
         values:
-          - shared-cpd-cluster
+          - azure-shared-cpd-cluster
   clusterConditions: []
