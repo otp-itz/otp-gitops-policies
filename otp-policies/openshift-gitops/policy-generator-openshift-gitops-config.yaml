@@ -7,11 +7,7 @@ policyDefaults:
   placement:
     placementRulePath: ./managed-clusters-placementrule.yaml
   remediationAction: enforce
-  orderManifests: true
 policies:
   - name: install-openshift-gitops
     manifests:
-      - path: https://raw.githubusercontent.com/one-touch-provisioning/otp-gitops/master/setup/setup/1_openshift-gitops-operator.yaml
-      - path: https://raw.githubusercontent.com/one-touch-provisioning/otp-gitops/master/setup/setup/3_custom-argocd-app-controller-clusterrole.yaml
-      - path: https://raw.githubusercontent.com/one-touch-provisioning/otp-gitops/master/setup/setup/3_custom-argocd-app-controller-clusterrolebinding.yaml
-      - path: ./argocd-instance
+      - path: ./openshift-gitops-subscription.yaml
