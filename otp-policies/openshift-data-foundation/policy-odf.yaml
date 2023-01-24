@@ -67,8 +67,8 @@ spec:
                   name: odf-operator
                   namespace: openshift-storage
                 spec:
-                  channel: stable-4.10
-                  name: odf-operator
+                  channel: stable-4.10        # change to match cluster version
+                  name: odf-operator          # change to match cluster version
                   source: redhat-operators
                   sourceNamespace: openshift-marketplace
           pruneObjectBehavior: None
