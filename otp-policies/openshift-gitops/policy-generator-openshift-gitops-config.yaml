@@ -7,7 +7,9 @@ policyDefaults:
   placement:
     placementRulePath: ./managed-clusters-placementrule.yaml
   remediationAction: enforce
+orderManifests: true
 policies:
   - name: install-openshift-gitops
     manifests:
       - path: ./openshift-gitops-subscription.yaml
+      - path: ./argocd-instance
